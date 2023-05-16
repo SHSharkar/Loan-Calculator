@@ -86,7 +86,7 @@
         class="p-6 bg-white rounded-lg shadow-md shadow-gray-400/50"
       >
         <form @submit.prevent="calculate" class="space-y-2">
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
             <div class="flex flex-col">
               <label for="loan-amount" class="mb-1 font-semibold text-blue-800"
                 >Loan Amount</label
@@ -98,7 +98,7 @@
                 min="0"
                 required
                 autofocus
-                class="px-2 sm:px-3 py-1 sm:py-2 font-semibold text-gray-700 transition duration-150 border-2 border-blue-600 rounded focus:outline-none focus:ring focus:ring-blue-200"
+                class="px-2 py-1 font-semibold text-gray-700 transition duration-150 border-2 border-blue-600 rounded sm:px-3 sm:py-2 focus:outline-none focus:ring focus:ring-blue-200"
               />
             </div>
 
@@ -115,7 +115,7 @@
                 min="0"
                 max="100"
                 required
-                class="px-2 sm:px-3 py-1 sm:py-2 font-semibold text-gray-700 transition duration-150 border-2 border-blue-600 rounded focus:outline-none focus:ring focus:ring-blue-200"
+                class="px-2 py-1 font-semibold text-gray-700 transition duration-150 border-2 border-blue-600 rounded sm:px-3 sm:py-2 focus:outline-none focus:ring focus:ring-blue-200"
               />
             </div>
 
@@ -132,7 +132,7 @@
                 min="0"
                 placeholder="Years"
                 required
-                class="px-2 sm:px-3 py-1 sm:py-2 font-semibold text-gray-700 transition duration-150 border-2 border-blue-600 rounded focus:outline-none focus:ring focus:ring-blue-200"
+                class="px-2 py-1 font-semibold text-gray-700 transition duration-150 border-2 border-blue-600 rounded sm:px-3 sm:py-2 focus:outline-none focus:ring focus:ring-blue-200"
               />
             </div>
 
@@ -148,14 +148,14 @@
                 x-model.number="loanTermMonths"
                 min="0"
                 placeholder="Months"
-                class="px-2 sm:px-3 py-1 sm:py-2 font-semibold text-gray-700 transition duration-150 border-2 border-blue-600 rounded focus:outline-none focus:ring focus:ring-blue-200"
+                class="px-2 py-1 font-semibold text-gray-700 transition duration-150 border-2 border-blue-600 rounded sm:px-3 sm:py-2 focus:outline-none focus:ring focus:ring-blue-200"
               />
             </div>
 
             <div class="">
               <button
                 type="submit"
-                class="w-full px-4 sm:px-4 py-2 sm:py-2 font-semibold text-white bg-blue-600 rounded hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
+                class="w-full px-4 py-2 font-semibold text-white bg-blue-600 rounded sm:px-4 sm:py-2 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
               >
                 Calculate
               </button>
@@ -164,7 +164,7 @@
         </form>
 
         <div
-          class="px-2 sm:px-4 py-2 sm:py-4 mt-4 bg-gray-100 rounded"
+          class="px-2 py-2 mt-4 bg-gray-100 rounded sm:px-4 sm:py-4"
           x-show="showResults"
           x-data="{
             formatCurrency: function(val) {
@@ -182,7 +182,7 @@
           x-transition:leave-end="opacity-0"
           x-cloak
         >
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2">
             <ul
               role="list"
               class="px-4 bg-white divide-y divide-gray-200 rounded shadow-md shadow-gray-400/50"
@@ -190,10 +190,13 @@
               <li class="py-2">
                 <div class="min-w-0">
                   <p
-                    class="text-sm md:text-base font-semibold leading-6 text-gray-600"
+                    class="text-sm font-normal leading-6 text-gray-600 md:text-base"
                   >
                     Monthly Payment:
-                    <span x-text="formatCurrency(monthlyPayment)"></span>
+                    <span
+                      x-text="formatCurrency(monthlyPayment)"
+                      class="font-bold text-blue-600"
+                    ></span>
                   </p>
                 </div>
               </li>
@@ -201,10 +204,13 @@
               <li class="py-2">
                 <div class="min-w-0">
                   <p
-                    class="text-sm md:text-base font-semibold leading-6 text-gray-600"
+                    class="text-sm font-normal leading-6 text-gray-600 md:text-base"
                   >
                     Total Payment:
-                    <span x-text="formatCurrency(totalPayment)"></span>
+                    <span
+                      x-text="formatCurrency(totalPayment)"
+                      class="font-bold text-blue-600"
+                    ></span>
                   </p>
                 </div>
               </li>
@@ -212,10 +218,13 @@
               <li class="py-2">
                 <div class="min-w-0">
                   <p
-                    class="text-sm md:text-base font-semibold leading-6 text-gray-600"
+                    class="text-sm font-normal leading-6 text-gray-600 md:text-base"
                   >
                     Total Interest:
-                    <span x-text="formatCurrency(totalInterest)"></span>
+                    <span
+                      x-text="formatCurrency(totalInterest)"
+                      class="font-bold text-blue-600"
+                    ></span>
                   </p>
                 </div>
               </li>
@@ -223,10 +232,13 @@
               <li class="py-2">
                 <div class="min-w-0">
                   <p
-                    class="text-sm md:text-base font-semibold leading-6 text-gray-600"
+                    class="text-sm font-normal leading-6 text-gray-600 md:text-base"
                   >
                     Annual Payment:
-                    <span x-text="formatCurrency(annualPayment)"></span>
+                    <span
+                      x-text="formatCurrency(annualPayment)"
+                      class="font-bold text-blue-600"
+                    ></span>
                   </p>
                 </div>
               </li>
@@ -234,10 +246,13 @@
               <li class="py-2">
                 <div class="min-w-0">
                   <p
-                    class="text-sm md:text-base font-semibold leading-6 text-gray-600"
+                    class="text-sm font-normal leading-6 text-gray-600 md:text-base"
                   >
                     Mortgage Constant:
-                    <span x-text="formatPercentage(mortgageConstant)"></span>
+                    <span
+                      x-text="formatPercentage(mortgageConstant)"
+                      class="font-bold text-blue-600"
+                    ></span>
                   </p>
                 </div>
               </li>
@@ -245,7 +260,7 @@
 
             <p
               x-html="summary"
-              class="text-sm md:text-base leading-6 text-gray-600"
+              class="text-sm leading-6 text-gray-600 md:text-base"
             ></p>
 
             <div class="md:space-x-3">
@@ -269,7 +284,7 @@
 
       <div class="inset-0 flex items-center justify-center">
         <div
-          class="mt-6 leading-normal text-sm text-gray-500 space-y-1 text-center"
+          class="mt-6 space-y-1 text-sm leading-normal text-center text-gray-500"
         >
           © 2023 <a href="/" target="_blank" class="font-bold">Loan Wizard</a> |
           Developed 💻 &amp; Maintained 👨‍💻 by

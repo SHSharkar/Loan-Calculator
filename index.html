@@ -320,7 +320,7 @@
           showResults: false,
           copyStatus: "",
           copySummaryStatus: "",
-          calculate() {
+          calculate: debounce(function () {
             let totalLoanTermMonths =
               this.loanTermYears * 12 + (this.loanTermMonths || 0);
             let monthlyInterestRate = this.interestRate / 100 / 12;
@@ -342,7 +342,7 @@
             this.showResults = true;
 
             this.generateQueryString();
-          },
+          }, 250),
           get summary() {
             if (!this.showResults) return "";
             return `A loan amount of <strong>${this.formatCurrency(
@@ -397,6 +397,10 @@
             this.loanTermYears = Number(urlParams.get("loanTermYears")) || 2;
             this.loanTermMonths = Number(urlParams.get("loanTermMonths")) || 0;
 
+            if (this.loanTermYears === 0 && this.loanTermMonths === 0) {
+              this.loanTermMonths = 1;
+            }
+
             if (window.location.search) {
               this.calculate();
             }
@@ -443,7 +447,17 @@
                   this.copySummaryStatus = "";
                 }, 1000);
               });
-          }
+          },
+        };
+      }
+
+      function debounce(func, wait) {
+        let timeout;
+        
+        return function (...args) {
+          const context = this;
+          clearTimeout(timeout);
+          timeout = setTimeout(() => func.apply(context, args), wait);
         };
       }
     </script>

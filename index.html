@@ -133,7 +133,6 @@
                 x-model.number="loanTermYears"
                 min="0"
                 placeholder="Years"
-                required
                 class="px-2 py-1 font-semibold text-gray-700 transition duration-150 border-2 border-blue-600 rounded sm:px-3 sm:py-2 focus:outline-none focus:ring focus:ring-blue-200"
               />
             </div>
@@ -332,7 +331,10 @@
           }, 200),
 
           validateInputs: function () {
-            if (this.loanTermYears === 0 && this.loanTermMonths === 0) {
+            if (
+              (this.loanTermYears === "" || this.loanTermYears === 0) &&
+              this.loanTermMonths === 0
+            ) {
               throw new Error("Loan term must be at least 1 month");
             }
             if (this.loanAmount <= 0) {
@@ -347,8 +349,10 @@
 
           performCalculations: function () {
             let totalLoanTermMonths =
-              this.loanTermYears * 12 + (this.loanTermMonths || 0);
+              (this.loanTermYears || 0) * 12 + (this.loanTermMonths || 0);
+
             let monthlyInterestRate = this.interestRate / 100 / 12;
+
             if (this.interestRate == 0) {
               this.monthlyPayment = (
                 this.loanAmount / totalLoanTermMonths

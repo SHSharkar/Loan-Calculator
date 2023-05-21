@@ -321,6 +321,29 @@
           copyStatus: "",
           copySummaryStatus: "",
           calculate: debounce(function () {
+            try {
+              this.validateInputs();
+              this.performCalculations();
+              this.showResults = true;
+              this.generateQueryString();
+            } catch (error) {
+              alert(error.message);
+            }
+          }, 200),
+
+          validateInputs: function () {
+            if (this.loanTermYears === 0 && this.loanTermMonths === 0) {
+              throw new Error("Loan term must be at least 1 month");
+            }
+            if (this.loanAmount <= 0) {
+              throw new Error("Loan amount must be a positive number");
+            }
+            if (this.interestRate <= 0) {
+              throw new Error("Interest rate must be a positive number");
+            }
+          },
+
+          performCalculations: function () {
             let totalLoanTermMonths =
               this.loanTermYears * 12 + (this.loanTermMonths || 0);
             let monthlyInterestRate = this.interestRate / 100 / 12;
@@ -339,21 +362,22 @@
               (this.annualPayment / this.loanAmount) *
               100
             ).toFixed(2);
-            this.showResults = true;
-
-            this.generateQueryString();
-          }, 250),
+          },
           get summary() {
             if (!this.showResults) return "";
             return `A loan amount of <strong>${this.formatCurrency(
               this.loanAmount
             )}</strong> at an annual interest rate of <strong>${
               this.interestRate
-            }%</strong> for a term of <strong>${this.loanTermYears} years ${
-              this.loanTermMonths
-                ? "and " + this.loanTermMonths + " months"
-                : ""
-            }</strong> results in a monthly repayment of <strong>${this.formatCurrency(
+            }%</strong> for a term of ${
+              this.loanTermYears > 0
+                ? `<strong>${this.loanTermYears} years ${
+                    this.loanTermMonths
+                      ? "and " + this.loanTermMonths + " months"
+                      : ""
+                  }</strong>`
+                : `<strong>${this.loanTermMonths} months</strong>`
+            } results in a monthly repayment of <strong>${this.formatCurrency(
               this.monthlyPayment
             )}</strong>. The total repayment over the loan term will amount to <strong>${this.formatCurrency(
               this.totalPayment
@@ -410,7 +434,7 @@
               loanAmount: this.loanAmount,
               interestRate: this.interestRate,
               loanTermYears: this.loanTermYears,
-              loanTermMonths: this.loanTermMonths
+              loanTermMonths: this.loanTermMonths,
             });
             history.pushState({}, "", "?" + urlParams.toString());
           },
@@ -453,7 +477,7 @@
 
       function debounce(func, wait) {
         let timeout;
-        
+
         return function (...args) {
           const context = this;
           clearTimeout(timeout);

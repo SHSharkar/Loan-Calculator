@@ -338,8 +338,10 @@
             if (this.loanAmount <= 0) {
               throw new Error("Loan amount must be a positive number");
             }
-            if (this.interestRate <= 0) {
-              throw new Error("Interest rate must be a positive number");
+            if (this.interestRate < 0) {
+              throw new Error(
+                "Interest rate must be zero or a positive number"
+              );
             }
           },
 
@@ -347,16 +349,24 @@
             let totalLoanTermMonths =
               this.loanTermYears * 12 + (this.loanTermMonths || 0);
             let monthlyInterestRate = this.interestRate / 100 / 12;
-            this.monthlyPayment = (
-              (this.loanAmount * monthlyInterestRate) /
-              (1 - Math.pow(1 + monthlyInterestRate, -totalLoanTermMonths))
-            ).toFixed(2);
+            if (this.interestRate == 0) {
+              this.monthlyPayment = (
+                this.loanAmount / totalLoanTermMonths
+              ).toFixed(2);
+              this.totalInterest = "0.00";
+            } else {
+              this.monthlyPayment = (
+                (this.loanAmount * monthlyInterestRate) /
+                (1 - Math.pow(1 + monthlyInterestRate, -totalLoanTermMonths))
+              ).toFixed(2);
+              this.totalInterest = (
+                this.monthlyPayment * totalLoanTermMonths -
+                this.loanAmount
+              ).toFixed(2);
+            }
             this.totalPayment = (
               this.monthlyPayment * totalLoanTermMonths
             ).toFixed(2);
-            this.totalInterest = (this.totalPayment - this.loanAmount).toFixed(
-              2
-            );
             this.annualPayment = (this.monthlyPayment * 12).toFixed(2);
             this.mortgageConstant = (
               (this.annualPayment / this.loanAmount) *
